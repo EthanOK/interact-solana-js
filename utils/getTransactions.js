@@ -20,9 +20,8 @@ const getTransactions = async (address, numTx) => {
       maxSupportedTransactionVersion: 0,
     }
   );
-  console.log(transactionDetails);
+
   transactionList.forEach((transaction, i) => {
-    console.log(transaction);
     const date = new Date(transaction.blockTime * 1000);
     console.log(`Transaction No: ${i + 1}`);
     console.log(`Signature: ${transaction.signature}`);
@@ -30,9 +29,13 @@ const getTransactions = async (address, numTx) => {
     console.log(`Status: ${transaction.confirmationStatus}`);
     const transactionInstructions =
       transactionDetails[i].transaction.message.instructions;
-    console.log(transactionInstructions);
+    transactionInstructions.forEach((instruction, n) => {
+      console.log(
+        `---Instructions ${n + 1}: ${instruction.programId.toString()}`
+      );
+    });
 
     console.log("-".repeat(20));
   });
 };
-getTransactions(WALLET_ADDRESS, 1);
+getTransactions(WALLET_ADDRESS);
