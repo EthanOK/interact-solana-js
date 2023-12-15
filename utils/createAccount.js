@@ -1,7 +1,5 @@
-const SOLANA = require("@solana/web3.js");
+const { Keypair } = require("@solana/web3.js");
 const { getPrivateKeyBySecretKey } = require("./getPrivateKeyBySecretKey");
-const { Connection, PublicKey, LAMPORTS_PER_SOL, clusterApiUrl, Keypair } =
-  SOLANA;
 
 async function main() {
   const keyPair = Keypair.generate();
