@@ -2,6 +2,8 @@
 
 https://www.quicknode.com/guides/solana-development/getting-started/a-complete-guide-to-airdropping-test-sol-on-solana
 
+https://spl.solana.com/token
+
 ## 修改本地测试集群
 
 ```
