@@ -1,13 +1,24 @@
-const { getMint } = require("@solana/spl-token");
-const { PublicKey } = require("../utils/config");
+const { SOLANA_KEYPAIR, WALLET_ADDRESS } = require("../utils/config");
 const { getDevConnection } = require("../utils/getConnect");
+const { parsePair } = require("../utils/parsePair");
+const { createAssociatedTokenAccount } = require("../utils/sendTransction");
+const {
+  getMintTokenInfo,
+  getAssociatedTokenAccountAddress,
+  getAssociatedTokenAccountInfo,
+} = require("../utils/tokenInfo");
 const connection = getDevConnection();
-async function getTokenMetaData(tokenAddress) {
-  const mintInfo = await getMint(connection, new PublicKey(tokenAddress));
-  console.log(mintInfo);
-  return mintInfo;
-}
+const signer = parsePair(SOLANA_KEYPAIR);
 
-getTokenMetaData("Dmi5tZumaHP5qqh6196x715J2yiEHSS5Zx2rVcz3LnwP");
+const tokenAddress = "Dmi5tZumaHP5qqh6196x715J2yiEHSS5Zx2rVcz3LnwP";
 
-getTokenMetaData("3tm55vKrBBZvWJ9nXa2dUFFnvrhvnsmUeLrMEjx6LXXm");
+getMintTokenInfo(connection, tokenAddress);
+
+const associatedTokenAddress = getAssociatedTokenAccountAddress(
+  WALLET_ADDRESS,
+  tokenAddress
+);
+
+console.log(associatedTokenAddress);
+
+getAssociatedTokenAccountInfo(connection, associatedTokenAddress);

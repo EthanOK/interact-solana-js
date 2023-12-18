@@ -60,3 +60,12 @@ spl-token transfer 3tm55vKrBBZvWJ9nXa2dUFFnvrhvnsmUeLrMEjx6LXXm 100 3c5MLawkv9DY
 or
 spl-token transfer 3tm55vKrBBZvWJ9nXa2dUFFnvrhvnsmUeLrMEjx6LXXm 100 3c5MLawkv9DY4C4zh39xHMic8MCTfBLVEZRSG4cWjjiH --fund-recipient
 ```
+
+## 账户
+
+```
+第一种：由 KeyPair 直接控制的的账户（个人账户）
+第一种：Token Account
+第三种：Associated Token Account （个人账户持有某token之前需要先创建某token的关联token账户，一个token下只有一个Associated Account）
+
+```
