@@ -1,5 +1,9 @@
-const { WALLET_ADDRESS, LAMPORTS_PER_SOL, PublicKey } = require("./config");
-const { getDevConnection } = require("./getConnect");
+const {
+  WALLET_ADDRESS,
+  LAMPORTS_PER_SOL,
+  PublicKey,
+} = require("../utils/config");
+const { getDevConnection } = require("../utils/getConnect");
 const connection = getDevConnection();
 
 const AIRDROP_AMOUNT = 2 * LAMPORTS_PER_SOL; // 2 SOL

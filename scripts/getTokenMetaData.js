@@ -1,6 +1,6 @@
 const { getMint } = require("@solana/spl-token");
-const { PublicKey } = require("./config");
-const { getDevConnection } = require("./getConnect");
+const { PublicKey } = require("../utils/config");
+const { getDevConnection } = require("../utils/getConnect");
 const connection = getDevConnection();
 async function getTokenMetaData(tokenAddress) {
   const mintInfo = await getMint(connection, new PublicKey(tokenAddress));

@@ -1,7 +1,7 @@
 const { createMint } = require("@solana/spl-token");
-const { getDevConnection } = require("./getConnect");
-const { parsePair } = require("./parsePair");
-const { SOLANA_KEYPAIR } = require("./config");
+const { getDevConnection } = require("../utils/getConnect");
+const { parsePair } = require("../utils/parsePair");
+const { SOLANA_KEYPAIR } = require("../utils/config");
 
 const ownerKeypair = parsePair(SOLANA_KEYPAIR);
 

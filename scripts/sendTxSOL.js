@@ -1,7 +1,7 @@
 const web3 = require("@solana/web3.js");
-const { getDevConnection } = require("./getConnect");
-const { SOLANA_KEYPAIR, RECEIVER_ADDRESS } = require("./config");
-const { parsePair } = require("./parsePair");
+const { getDevConnection } = require("../utils/getConnect");
+const { SOLANA_KEYPAIR, RECEIVER_ADDRESS } = require("../utils/config");
+const { parsePair } = require("../utils/parsePair");
 
 const connection = getDevConnection();
 const from_Keypair = parsePair(SOLANA_KEYPAIR);

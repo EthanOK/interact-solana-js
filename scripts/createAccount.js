@@ -1,5 +1,5 @@
 const { Keypair } = require("@solana/web3.js");
-const { getPrivateKeyBySecretKey } = require("./getPrivateKeyBySecretKey");
+const { getPrivateKeyBySecretKey } = require("../utils/secretKeyUtils");
 
 async function main() {
   const keyPair = Keypair.generate();

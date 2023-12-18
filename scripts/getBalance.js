@@ -1,5 +1,9 @@
-const { WALLET_ADDRESS, PublicKey, LAMPORTS_PER_SOL } = require("./config");
-const { getDevConnection } = require("./getConnect");
+const {
+  WALLET_ADDRESS,
+  PublicKey,
+  LAMPORTS_PER_SOL,
+} = require("../utils/config");
+const { getDevConnection } = require("../utils/getConnect");
 
 const connection = getDevConnection();
 

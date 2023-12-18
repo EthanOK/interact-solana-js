@@ -1,6 +1,6 @@
 const { PublicKey } = require("@solana/web3.js");
-const { WALLET_ADDRESS } = require("./config");
-const { getDevConnection } = require("./getConnect");
+const { WALLET_ADDRESS } = require("../utils/config");
+const { getDevConnection } = require("../utils/getConnect");
 
 const getTransactions = async (address, numTx) => {
   const pubKey = new PublicKey(address);
