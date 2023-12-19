@@ -4,6 +4,10 @@ const {
   TOKEN_PROGRAM_ID,
   ASSOCIATED_TOKEN_PROGRAM_ID,
   getAccount,
+  getAssociatedTokenAddress,
+  NATIVE_MINT,
+  createSyncNativeInstruction,
+  closeAccount,
 } = require("@solana/spl-token");
 
 const {
@@ -80,4 +84,78 @@ async function createAssociatedTokenAccount(
   return associatedTokenAccount;
 }
 
-module.exports = { sendTransactionSOL, createAssociatedTokenAccount };
+// SOL => Wrapped SOL
+
+async function convertWrappedSOL(connection, signer, amount) {
+  const associatedTokenAccount = await getAssociatedTokenAddress(
+    NATIVE_MINT,
+    signer.publicKey
+  );
+  let hasAssociatedTokenAccount = false;
+  try {
+    await getAccount(connection, associatedTokenAccount, "confirmed");
+    hasAssociatedTokenAccount = true;
+  } catch {}
+  console.log("hasAssociatedTokenAccount:" + hasAssociatedTokenAccount);
+  let transaction;
+  if (!hasAssociatedTokenAccount) {
+    transaction = new Transaction().add(
+      createAssociatedTokenAccountInstruction(
+        signer.publicKey,
+        associatedTokenAccount,
+        signer.publicKey,
+        NATIVE_MINT
+      ),
+      SystemProgram.transfer({
+        fromPubkey: signer.publicKey,
+        toPubkey: associatedTokenAccount,
+        lamports: LAMPORTS_PER_SOL,
+      }),
+      createSyncNativeInstruction(associatedTokenAccount)
+    );
+  } else {
+    transaction = new Transaction().add(
+      SystemProgram.transfer({
+        fromPubkey: signer.publicKey,
+        toPubkey: associatedTokenAccount,
+        lamports: amount,
+      }),
+      createSyncNativeInstruction(associatedTokenAccount)
+    );
+  }
+
+  const signature = await sendAndConfirmTransaction(
+    connection,
+    transaction,
+    [signer],
+    "confirmed"
+  );
+
+  await connection.confirmTransaction(signature, "confirmed");
+  console.log(signature);
+}
+
+//  Wrapped SOL => SOL
+
+async function unWrapSOL(connection, signer) {
+  const associatedTokenAccount = await getAssociatedTokenAddress(
+    NATIVE_MINT,
+    signer.publicKey
+  );
+  const signature = await closeAccount(
+    connection,
+    signer,
+    associatedTokenAccount,
+    signer.publicKey,
+    signer
+  );
+  await connection.confirmTransaction(signature, "confirmed");
+  console.log(signature);
+}
+
+module.exports = {
+  sendTransactionSOL,
+  createAssociatedTokenAccount,
+  convertWrappedSOL,
+  unWrapSOL,
+};
