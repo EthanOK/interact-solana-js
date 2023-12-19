@@ -24,9 +24,12 @@ async function sendTransactionSOL(connection, signer, toAddress, amount) {
   );
 
   // Sign transaction, broadcast, and confirm
-  const signature = await sendAndConfirmTransaction(connection, transaction, [
-    signer,
-  ]);
+  const signature = await sendAndConfirmTransaction(
+    connection,
+    transaction,
+    [signer],
+    "confirmed"
+  );
 
   console.log("SIGNATURE", signature);
 }
@@ -64,14 +67,16 @@ async function createAssociatedTokenAccount(
       [signer],
       "confirmed"
     );
-
+    console.log("associatedTokenAddress", associatedToken.toBase58());
     console.log("SIGNATURE", signature);
   } catch (error) {}
 
-  const associatedTokenAccount = await getAccount(connection, associatedToken);
-  console.log(
-    "associatedTokenAddress:" + associatedTokenAccount.address.toBase58()
+  const associatedTokenAccount = await getAccount(
+    connection,
+    associatedToken,
+    "confirmed"
   );
+
   return associatedTokenAccount;
 }
 

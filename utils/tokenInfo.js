@@ -11,8 +11,17 @@ const { PublicKey } = require("./config");
 
 async function getMintTokenInfo(connection, tokenAddress) {
   const mintInfo = await getMint(connection, new PublicKey(tokenAddress));
-  console.log(mintInfo);
   return mintInfo;
+}
+
+async function getTokenSupply(connection, tokenAddress) {
+  const mintInfo = await getMint(connection, new PublicKey(tokenAddress));
+  return mintInfo.supply;
+}
+
+async function getTokenDecimals(connection, tokenAddress) {
+  const mintInfo = await getMint(connection, new PublicKey(tokenAddress));
+  return mintInfo.decimals;
 }
 
 async function getAssociatedTokenAccountInfo(
@@ -23,11 +32,22 @@ async function getAssociatedTokenAccountInfo(
     connection,
     new PublicKey(associatedTokenAddress)
   );
-  console.log(accountInfo);
   return accountInfo;
 }
 
-function getAssociatedTokenAccountAddress(ownerAddress, tokenAddress) {
+async function getTokenBalance(connection, tokenAddress, ownerAddress) {
+  const asociatedAddress = await getAssociatedTokenAccountAddress(
+    tokenAddress,
+    ownerAddress
+  );
+  const asociatedAccountInfo = await getAccount(
+    connection,
+    new PublicKey(asociatedAddress)
+  );
+  return asociatedAccountInfo.amount;
+}
+
+async function getAssociatedTokenAccountAddress(tokenAddress, ownerAddress) {
   // const associatedTokenAccount = await getOrCreateAssociatedTokenAccount(
   //   connection,
   //   signer,
@@ -53,4 +73,7 @@ module.exports = {
   getMintTokenInfo,
   getAssociatedTokenAccountInfo,
   getAssociatedTokenAccountAddress,
+  getTokenSupply,
+  getTokenDecimals,
+  getTokenBalance,
 };

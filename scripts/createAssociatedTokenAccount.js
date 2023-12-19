@@ -11,5 +11,5 @@ createAssociatedTokenAccount(
   connection,
   signer,
   tokenAddress,
-  "A2MBSn6iGdB9JJactVghrDg2wKDgJi62Yd2ntskQdkgA"
+  "AQAMLqdN3LSvaHx5tCVeWZWDRTGqL7QuvNgojCb3pS6Z"
 );

@@ -6,19 +6,38 @@ const {
   getMintTokenInfo,
   getAssociatedTokenAccountAddress,
   getAssociatedTokenAccountInfo,
+  getTokenSupply,
+  getTokenBalance,
 } = require("../utils/tokenInfo");
 const connection = getDevConnection();
 const signer = parsePair(SOLANA_KEYPAIR);
 
 const tokenAddress = "Dmi5tZumaHP5qqh6196x715J2yiEHSS5Zx2rVcz3LnwP";
 
-getMintTokenInfo(connection, tokenAddress);
+async function main() {
+  const tokenInfo = await getMintTokenInfo(connection, tokenAddress);
+  console.log("tokenAddress:" + tokenAddress);
+  console.log("supply:", tokenInfo.supply, "decimals:", tokenInfo.decimals);
 
-const associatedTokenAddress = getAssociatedTokenAccountAddress(
-  WALLET_ADDRESS,
-  tokenAddress
-);
+  const associatedTokenAddress = await getAssociatedTokenAccountAddress(
+    tokenAddress,
+    WALLET_ADDRESS
+  );
 
-console.log(associatedTokenAddress);
+  console.log("associatedTokenAddress:" + associatedTokenAddress);
 
-getAssociatedTokenAccountInfo(connection, associatedTokenAddress);
+  // const associatedTokenAccount = await getAssociatedTokenAccountInfo(
+  //   connection,
+  //   associatedTokenAddress
+  // );
+  // console.log(associatedTokenAccount);
+
+  const tokenBalance = await getTokenBalance(
+    connection,
+    tokenAddress,
+    WALLET_ADDRESS
+  );
+  console.log("tokenBalance:" + tokenBalance);
+}
+
+main().catch(console.error);
