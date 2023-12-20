@@ -1,7 +1,7 @@
 const { Connection, clusterApiUrl } = require("@solana/web3.js");
 
 const getDevConnection = () => {
-  const connection = new Connection(clusterApiUrl("devnet"));
+  const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
   return connection;
 };
 
