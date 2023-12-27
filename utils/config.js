@@ -8,7 +8,8 @@ const {
 
 const SOLANA_KEYPAIR = process.env.SOLANA_KEYPAIR;
 const WALLET_ADDRESS = process.env.WALLET_ADDRESS;
-const WALLET_ADDRESS1 = "AQAMLqdN3LSvaHx5tCVeWZWDRTGqL7QuvNgojCb3pS6Z";
+const SOLANA_KEYPAIR1 = process.env.SOLANA_KEYPAIR_1;
+const WALLET_ADDRESS1 = process.env.WALLET_ADDRESS_1;
 
 const RECEIVER_ADDRESS = "3c5MLawkv9DY4C4zh39xHMic8MCTfBLVEZRSG4cWjjiH";
 
@@ -20,4 +21,5 @@ module.exports = {
   LAMPORTS_PER_SOL,
   WALLET_ADDRESS1,
   Connection,
+  SOLANA_KEYPAIR1,
 };

@@ -3,11 +3,11 @@ const {
   getSecretKeyByPrivateKey,
 } = require("../utils/secretKeyUtils");
 const pair0 = require("../keyPairs/AQAMLqdN3LSvaHx5tCVeWZWDRTGqL7QuvNgojCb3pS6Z.json");
-const { SOLANA_KEYPAIR } = require("../utils/config");
+const { SOLANA_KEYPAIR, SOLANA_KEYPAIR1 } = require("../utils/config");
 const { parsePair } = require("../utils/parsePair");
 
 async function main() {
-  const keyPair = parsePair(SOLANA_KEYPAIR);
+  const keyPair = parsePair(SOLANA_KEYPAIR1);
 
   console.log("publicKey:" + keyPair.publicKey.toString());
 
