@@ -39,5 +39,4 @@ async function main() {
   );
   console.log("tokenBalance:" + tokenBalance);
 }
-
 main().catch(console.error);

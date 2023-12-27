@@ -5,6 +5,7 @@ const {
   getAssociatedTokenAddressSync,
   TOKEN_PROGRAM_ID,
   ASSOCIATED_TOKEN_PROGRAM_ID,
+  getAssociatedTokenAddress,
 } = require("@solana/spl-token");
 
 const { PublicKey } = require("./config");
@@ -35,6 +36,15 @@ async function getAssociatedTokenAccountInfo(
   return accountInfo;
 }
 
+async function tokenAccountIsCreated(connection, tokenAddress) {
+  try {
+    await getAccount(connection, new PublicKey(tokenAddress));
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
 async function getTokenBalance(connection, tokenAddress, ownerAddress) {
   const asociatedAddress = await getAssociatedTokenAccountAddress(
     tokenAddress,
@@ -58,7 +68,7 @@ async function getAssociatedTokenAccountAddress(tokenAddress, ownerAddress) {
   // console.log(associatedTokenAccount);
   // return associatedTokenAccount;
 
-  const associatedToken = getAssociatedTokenAddressSync(
+  const associatedToken = await getAssociatedTokenAddress(
     new PublicKey(tokenAddress),
     new PublicKey(ownerAddress),
     false,
@@ -76,4 +86,5 @@ module.exports = {
   getTokenSupply,
   getTokenDecimals,
   getTokenBalance,
+  tokenAccountIsCreated,
 };
