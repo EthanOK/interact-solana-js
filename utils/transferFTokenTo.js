@@ -152,81 +152,85 @@ async function transferERC20TokenIfNotExistCreateToAT(
 }
 
 async function transferFromERC20TokenIfNotExistCreateToAT(
+  connection,
+  payer,
+  tokenAddress,
+  fromAddress,
+  receiverAddress,
+  amount
+) {
+  const signerBalance = await getTokenBalance(
     connection,
-    payer,
     tokenAddress,
-    fromAddress,
-    receiverAddress,
-    amount
-  ) {
-    const signerBalance = await getTokenBalance(
+    fromAddress
+  );
+  if (signerBalance < amount) {
+    console.log("余额不足");
+    return;
+  }
+  const fromAssociatedTokenAddress = await getAssociatedTokenAccountAddress(
+    tokenAddress,
+    fromAddress
+  );
+
+  const toAssociatedTokenAddress = await getAssociatedTokenAccountAddress(
+    tokenAddress,
+    receiverAddress
+  );
+  const isCreate = await tokenAccountIsCreated(
+    connection,
+    toAssociatedTokenAddress
+  );
+
+  const balance = await getNativeBalance(connection, toAssociatedTokenAddress);
+
+  if (isCreate || balance > 0) {
+    const signature = await transfer(
       connection,
-      tokenAddress,
-      fromAddress
+      payer,
+      new PublicKey(fromAssociatedTokenAddress),
+      new PublicKey(toAssociatedTokenAddress),
+      payer.publicKey,
+      amount,
+      [],
+      "confirmed"
     );
-    if (signerBalance < amount) {
-      console.log("余额不足");
-      return;
-    }
-    const fromAssociatedTokenAddress = await getAssociatedTokenAccountAddress(
-      tokenAddress,
-      fromAddress
-    );
-  
-    const toAssociatedTokenAddress = await getAssociatedTokenAccountAddress(
-      tokenAddress,
-      receiverAddress
-    );
-    const isCreate = await tokenAccountIsCreated(
-      connection,
-      toAssociatedTokenAddress
-    );
-  
-    const balance = await getNativeBalance(connection, toAssociatedTokenAddress);
-  
-    if (isCreate || balance > 0) {
-      const signature = await transfer(
-        connection,
-        payer,
+    // 'confirmed' | 'finalized'
+    console.log("signature:" + signature);
+  } else {
+    const [ownerPublicKey, signers] = getSigners(payer.publicKey, []);
+    // 两条指令 1: reateAssociatedTokenAccount 2: createTransfer
+    const transaction = new Transaction().add(
+      createAssociatedTokenAccountInstruction(
+        payer.publicKey,
+        new PublicKey(toAssociatedTokenAddress),
+        new PublicKey(receiverAddress),
+        new PublicKey(tokenAddress),
+        TOKEN_PROGRAM_ID,
+        ASSOCIATED_TOKEN_PROGRAM_ID
+      ),
+      createTransferInstruction(
         new PublicKey(fromAssociatedTokenAddress),
         new PublicKey(toAssociatedTokenAddress),
-        payer.publicKey,
+        ownerPublicKey,
         amount,
         [],
-        "confirmed"
-      );
-      // 'confirmed' | 'finalized'
-      console.log("signature:" + signature);
-    } else {
-      const [ownerPublicKey, signers] = getSigners(payer.publicKey, []);
-      // 两条指令 1: reateAssociatedTokenAccount 2: createTransfer
-      const transaction = new Transaction().add(
-        createAssociatedTokenAccountInstruction(
-          payer.publicKey,
-          new PublicKey(toAssociatedTokenAddress),
-          new PublicKey(receiverAddress),
-          new PublicKey(tokenAddress),
-          TOKEN_PROGRAM_ID,
-          ASSOCIATED_TOKEN_PROGRAM_ID
-        ),
-        createTransferInstruction(
-          new PublicKey(fromAssociatedTokenAddress),
-          new PublicKey(toAssociatedTokenAddress),
-          ownerPublicKey,
-          amount,
-          [],
-          TOKEN_PROGRAM_ID
-        )
-      );
-  
-      const signature = await sendAndConfirmTransaction(
-        connection,
-        transaction,
-        [payer, ...signers],
-        "confirmed"
-      );
-      console.log("signature:" + signature);
-    }
-  }
+        TOKEN_PROGRAM_ID
+      )
+    );
 
-module.exports = { transferERC20Token, transferERC20TokenIfNotExistCreateToAT,transferFromERC20TokenIfNotExistCreateToAT };
+    const signature = await sendAndConfirmTransaction(
+      connection,
+      transaction,
+      [payer, ...signers],
+      "confirmed"
+    );
+    console.log("signature:" + signature);
+  }
+}
+
+module.exports = {
+  transferERC20Token,
+  transferERC20TokenIfNotExistCreateToAT,
+  transferFromERC20TokenIfNotExistCreateToAT,
+};

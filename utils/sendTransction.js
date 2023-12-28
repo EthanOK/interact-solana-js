@@ -8,6 +8,7 @@ const {
   NATIVE_MINT,
   createSyncNativeInstruction,
   closeAccount,
+  getOrCreateAssociatedTokenAccount,
 } = require("@solana/spl-token");
 
 const {
@@ -83,6 +84,7 @@ async function createAssociatedTokenAccount(
 
   return associatedTokenAccount;
 }
+ 
 
 // SOL => Wrapped SOL
 

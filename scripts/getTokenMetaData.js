@@ -1,6 +1,7 @@
 const { SOLANA_KEYPAIR, WALLET_ADDRESS } = require("../utils/config");
 const { getDevConnection } = require("../utils/getConnect");
 const { parsePair } = require("../utils/parsePair");
+const { getTokenAccountBalance } = require("../utils/postRequest");
 const { createAssociatedTokenAccount } = require("../utils/sendTransction");
 const {
   getMintTokenInfo,
@@ -25,6 +26,10 @@ async function main() {
   );
 
   console.log("associatedTokenAddress:" + associatedTokenAddress);
+
+  console.log(
+    `tokenBalance:${await getTokenAccountBalance(associatedTokenAddress)} Token`
+  );
 
   // const associatedTokenAccount = await getAssociatedTokenAccountInfo(
   //   connection,
