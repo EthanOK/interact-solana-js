@@ -4,6 +4,8 @@ https://www.quicknode.com/guides/solana-development/getting-started/a-complete-g
 
 https://spl.solana.com/token
 
+https://solanacookbook.com/
+
 ## 修改本地测试集群
 
 ```
