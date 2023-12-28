@@ -2,6 +2,8 @@
 
 https://www.quicknode.com/guides/solana-development/getting-started/a-complete-guide-to-airdropping-test-sol-on-solana
 
+https://docs.solana.com/developers
+
 https://spl.solana.com/token
 
 https://solanacookbook.com/
