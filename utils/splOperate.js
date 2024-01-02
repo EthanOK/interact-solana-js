@@ -4,8 +4,14 @@ const {
   createAssociatedTokenAccountInstruction,
   createTransferInstruction,
   transfer,
+  setAuthority,
+  AuthorityType,
 } = require("@solana/spl-token");
-const { getAssociatedTokenAccountAddress, getTokenBalance, tokenAccountIsCreated } = require("./tokenInfo");
+const {
+  getAssociatedTokenAccountAddress,
+  getTokenBalance,
+  tokenAccountIsCreated,
+} = require("./tokenInfo");
 const { PublicKey } = require("./config");
 const { Transaction } = require("@solana/web3.js");
 const { getNativeBalance } = require("./getNativeBalance");
@@ -132,10 +138,31 @@ const splTransferFrom = async (
   }
 };
 
+const splSetAuthority = async (
+  connection,
+  payer,
+  mintTokenAddress,
+  authorityType,
+  newAuthority
+) => {
+  const signature = await setAuthority(
+    connection,
+    payer,
+    new PublicKey(mintTokenAddress),
+    payer.publicKey,
+    authorityType,
+    newAuthority,
+    [],
+    "confirmed"
+  );
+  console.log(signature);
+  return signature;
+};
+
 function getSigners(signerOrMultisig, multiSigners) {
   return signerOrMultisig instanceof PublicKey
     ? [signerOrMultisig, multiSigners]
     : [signerOrMultisig.publicKey, [signerOrMultisig]];
 }
 
-module.exports = { splApprove, splRevoke, splTransferFrom };
+module.exports = { splApprove, splRevoke, splTransferFrom, splSetAuthority };

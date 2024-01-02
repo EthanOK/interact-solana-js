@@ -18,6 +18,7 @@ const tokenAddress = "Dmi5tZumaHP5qqh6196x715J2yiEHSS5Zx2rVcz3LnwP";
 async function main() {
   const tokenInfo = await getMintTokenInfo(connection, tokenAddress);
   console.log("tokenAddress:" + tokenAddress);
+  console.log(tokenInfo);
   console.log("supply:", tokenInfo.supply, "decimals:", tokenInfo.decimals);
 
   const associatedTokenAddress = await getAssociatedTokenAccountAddress(
