@@ -11,6 +11,8 @@ async function main() {
 
   console.log("publicKey:" + keyPair.publicKey.toString());
 
+  console.log(keyPair.secretKey);
+
   const privateKey = getPrivateKeyBySecretKey(keyPair.secretKey);
 
   console.log("privateKey:" + privateKey);
