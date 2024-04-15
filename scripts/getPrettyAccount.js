@@ -8,7 +8,7 @@ let keyPair;
 - 最后几位字符匹配，我们用`$`符号，例如`000$`就会匹配以`000`结尾的地址。
 - 中间几位我们不关心，可以利用`.*`通配符，例如`^0x000.*000$`就会匹配任何以`0x000`开头并以`000`结尾的地址。
 */
-const regex = /^A.*A$/;
+const regex = /^ETH.*$/;
 var isValid = false;
 while (!isValid) {
   keyPair = Keypair.generate();

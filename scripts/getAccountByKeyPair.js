@@ -3,11 +3,15 @@ const {
   getSecretKeyByPrivateKey,
 } = require("../utils/secretKeyUtils");
 const pair0 = require("../keyPairs/AQAMLqdN3LSvaHx5tCVeWZWDRTGqL7QuvNgojCb3pS6Z.json");
-const { SOLANA_KEYPAIR, SOLANA_KEYPAIR1 } = require("../utils/config");
+const {
+  SOLANA_KEYPAIR,
+  SOLANA_KEYPAIR1,
+  SOLANA_KEYPAIR_ORE,
+} = require("../utils/config");
 const { parsePair } = require("../utils/parsePair");
 
 async function main() {
-  const keyPair = parsePair(SOLANA_KEYPAIR1);
+  const keyPair = parsePair(SOLANA_KEYPAIR_ORE);
 
   console.log("publicKey:" + keyPair.publicKey.toString());
 
@@ -18,6 +22,8 @@ async function main() {
   console.log("privateKey:" + privateKey);
 
   const secretKey1 = getSecretKeyByPrivateKey(privateKey);
+
+  console.log(secretKey1);
 
   console.log(
     "secretKey == secretKey1:" +
